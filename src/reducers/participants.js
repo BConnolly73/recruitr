@@ -6,6 +6,8 @@ export const participantsReducer = (state = participantsReducerDefaultState, act
                 ...state,
                 action.participant
             ];
+        case 'SET_PARTICIPANTS':
+            return action.participants;
         default:
             return state;
     }

@@ -29,3 +29,26 @@ export const startAddParticipant = (participantData = {}) => {
         });
     }
 }
+
+export const setParticipants = (participants) => {
+    return {
+        type: 'SET_PARTICIPANTS',
+        participants: participants
+    }
+}
+
+export const startSetParticipants = () => {
+    return (dispatch, getState) => {
+        return database.ref(`participants`).once('value').then((snapshot) => {
+            const participants = [];
+            snapshot.forEach((participant) => {
+                participants.push({
+                    id: participant.key,
+                    ...participant.val()
+                });
+            });
+
+            dispatch(setParticipants(participants));
+        })
+    }
+}
