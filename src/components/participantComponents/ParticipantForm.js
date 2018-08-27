@@ -5,15 +5,21 @@ export default class ParticipantForm extends React.Component {
         super(props);
 
         this.state = {
-            first_name: props.first_name ? props.first_name : '',
-            last_name: props.last_name ? props.last_name : '',
-            email: props.email ? props.email : '',
-            year: props.year ? props.year : 0,
-            position: props.position ? props.position : 0,
-            team: props.team ? props.team : 0,
-            about: props.about ? props.about : '',
+            first_name: props.participant.first_name ? props.participant.first_name : '',
+            last_name: props.participant.last_name ? props.participant.last_name : '',
+            email: props.participant.email ? props.participant.email : '',
+            year: props.participant.year ? props.participant.year : 0,
+            position: props.participant.position ? props.participant.position : 0,
+            team: props.participant.team ? props.participant.team : 0,
+            about: props.participant.about ? props.participant.about : '',
             error: ''
         };
+    }
+
+    componentDidMount() {
+        document.getElementById('year').selectedIndex = this.state.year;
+        document.getElementById('position').selectedIndex = this.state.position;
+        document.getElementById('team').selectedIndex = this.state.team;
     }
 
     onFirstNameChange = (e) => {
@@ -106,6 +112,7 @@ export default class ParticipantForm extends React.Component {
 
                 <select
                     onChange={this.onYearChange}
+                    id="year"
                 >
                     <option
                         value={0}
@@ -135,6 +142,7 @@ export default class ParticipantForm extends React.Component {
 
                 <select
                     onChange={this.onPositionChange}
+                    id="position"
                 >
                     <option
                         value={0}
@@ -155,6 +163,7 @@ export default class ParticipantForm extends React.Component {
 
                 <select
                     onChange={this.onTeamChange}
+                    id="team"
                 >
                     <option
                         value={0}
