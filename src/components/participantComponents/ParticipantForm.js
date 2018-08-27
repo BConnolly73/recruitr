@@ -5,13 +5,13 @@ export default class ParticipantForm extends React.Component {
         super(props);
 
         this.state = {
-            first_name: props.participant.first_name ? props.participant.first_name : '',
-            last_name: props.participant.last_name ? props.participant.last_name : '',
-            email: props.participant.email ? props.participant.email : '',
-            year: props.participant.year ? props.participant.year : 0,
-            position: props.participant.position ? props.participant.position : 0,
-            team: props.participant.team ? props.participant.team : 0,
-            about: props.participant.about ? props.participant.about : '',
+            first_name: props.participant ? props.participant.first_name : '',
+            last_name: props.participant ? props.participant.last_name : '',
+            email: props.participant ? props.participant.email : '',
+            year: props.participant ? props.participant.year : 0,
+            position: props.participant ? props.participant.position : 0,
+            team: props.participant ? props.participant.team : 0,
+            about: props.participant ? props.participant.about : '',
             error: ''
         };
     }

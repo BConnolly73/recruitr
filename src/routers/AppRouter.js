@@ -9,6 +9,9 @@ import NewParticipantPage from './../components/participantComponents/NewPartici
 import ParticipantsViewPage from './../components/participantComponents/ParticipantsViewPage.js';
 import EditParticipantPage from './../components/participantComponents/EditParticipantPage.js';
 
+import NewDrillPage from './../components/drillComponents/NewDrillPage.js';
+
+
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -23,6 +26,9 @@ const AppRouter = () => (
                 <PrivateRoute path="/new_participant" component={NewParticipantPage} exact={true}/>
                 <PrivateRoute path="/participants" component={ParticipantsViewPage} exact={true}/>
                 <PrivateRoute path="/edit_participant/:id" component={EditParticipantPage}/>
+
+                <PrivateRoute path="/new_drill" component={NewDrillPage} exact={true}/>
+
                 <Route component={NotFoundPage} />
             </Switch>
         </div>
