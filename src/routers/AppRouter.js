@@ -5,8 +5,8 @@ import DashboardPage from './../components/DashboardPage.js';
 import LoginPage from './../components/LoginPage.js';
 import NotFoundPage from './../components/NotFoundPage.js';
 
-import NewParticipantPage from './../components/NewParticipantPage.js';
-import ParticipantsViewPage from './../components/ParticipantsViewPage.js';
+import NewParticipantPage from './../components/participantComponents/NewParticipantPage.js';
+import ParticipantsViewPage from './../components/participantComponents/ParticipantsViewPage.js';
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';

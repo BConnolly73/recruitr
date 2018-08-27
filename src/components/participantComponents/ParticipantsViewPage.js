@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ParticipantsViewItem from './ParticipantsViewItem'
-import selectAllParticipants from '../selectors/participants';
+import selectAllParticipants from '../../selectors/participants';
 
 export class ParticipantsViewPage extends React.Component {
     constructor(props) {

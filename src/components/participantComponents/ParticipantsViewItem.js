@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 const ParticipantsViewItem = ({first_name, last_name, email, year, position, team, about}) => (
     <div>
