@@ -52,3 +52,18 @@ export const startSetParticipants = () => {
         })
     }
 }
+
+export const editParticipant = (id, updates) => ({
+    type: 'EDIT_PARTICIPANT',
+    id: id,
+    updates: updates
+});
+
+export const startEditParticipant = (id, updates) => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        return database.ref(`participants/${id}`).update(updates).then(() => {
+            dispatch(editParticipant(id, updates));
+        });
+    }
+}

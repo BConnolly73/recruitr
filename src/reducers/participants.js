@@ -8,6 +8,17 @@ export const participantsReducer = (state = participantsReducerDefaultState, act
             ];
         case 'SET_PARTICIPANTS':
             return action.participants;
+        case 'EDIT_PARTICIPANT':
+            return state.map((participant) => {
+                if (participant.id === action.id) {
+                    return {
+                        ...participant,
+                        ...action.updates
+                    }
+                } else {
+                    return participant;
+                }
+            });
         default:
             return state;
     }
