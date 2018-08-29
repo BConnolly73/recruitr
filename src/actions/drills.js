@@ -11,10 +11,11 @@ export const startAddDrill = (drillData = {}) => {
         const uid = getState().auth.uid;
         const {
             name = '',
-            description = ''
+            description = '',
+            measurements = []
         } = drillData;
 
-        const drill = { name, description };
+        const drill = { name, description, measurements };
 
         return database.ref(`drills`).push(drill).then((ref) => {
             dispatch(addDrill({
