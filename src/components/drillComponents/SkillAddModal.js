@@ -28,14 +28,25 @@ export default class SkillAddModal extends React.Component {
         } else if (this.state.type === 0) {
             this.setState(() => ({ error: 'Please provide a type' }));
         } else {
-            this.setState(() => ({ error: '' }));
-            this.props.handleClearSelectedOption({
+            this.closeAndResetModal({
                 'name': this.state.name,
                 'type': this.state.type
-            });
-            this.state.name = '';
-            this.state.type = 0;
+            })
         }
+    }
+
+    closeModalNoReturn = (e) => {
+        this.closeAndResetModal();
+    }
+
+    closeAndResetModal = (return_val = null) => {
+        this.setState(() => ({ 
+            error: '',
+            name: '',
+            type: 0
+        }));
+
+        this.props.handleClearSelectedOption(return_val);
     }
 
     render() {
@@ -44,7 +55,7 @@ export default class SkillAddModal extends React.Component {
                 <form>
                     <Modal
                         isOpen={this.props.open_modal}
-                        onRequestClose={this.handleSumbit}
+                        onRequestClose={this.closeModalNoReturn}
                         contentLabel="Add Skill"
                         closeTimeoutMS={200}
                         className="modal"

@@ -46,11 +46,14 @@ export default class DrillForm extends React.Component {
     }
 
     onSkillConfirm = (measurement) => {
-        console.log('Back to DrillForm');
-        this.setState((prevState) => ({ 
-            open_modal : false,
-            measurements: prevState.measurements.concat(measurement)
-        }));
+        if (measurement) {
+            this.setState((prevState) => ({ 
+                open_modal : false,
+                measurements: prevState.measurements.concat(measurement)
+            }));
+        } else {
+            this.setState(() => ({ open_modal : false }))
+        }
     }
 
     openSkillModal = (e) => {
