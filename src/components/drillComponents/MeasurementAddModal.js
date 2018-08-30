@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-export default class SkillAddModal extends React.Component {
+export default class MeasurementAddModal extends React.Component {
     constructor(props) {
         super(props);
 
@@ -56,16 +56,16 @@ export default class SkillAddModal extends React.Component {
                     <Modal
                         isOpen={this.props.open_modal}
                         onRequestClose={this.closeModalNoReturn}
-                        contentLabel="Add Skill"
+                        contentLabel="Add Measurement"
                         closeTimeoutMS={200}
                         className="modal"
                     >
-                        <h3 className="modal__title">Enter Skill Details</h3>
+                        <h3 className="modal__title">Enter Measurement Details</h3>
                         {this.state.error && (<p className="form__error">ERROR: {this.state.error}</p>)}
                         <input
                             type="text"
                             id="new_measurement_name"
-                            placeholder="Skill Name"
+                            placeholder="Measurement Name"
                             onChange={this.onMeasurementNameChange}
                         />
                         <select id="new_measurement_type" onChange={this.onMeasurementTypeChange}>

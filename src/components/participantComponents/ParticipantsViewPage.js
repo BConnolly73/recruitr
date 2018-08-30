@@ -13,7 +13,7 @@ export class ParticipantsViewPage extends React.Component {
         return (
             <div>
                 {
-                    this.props.participants.length === 0? (
+                    this.props.participants.length === 0 ? (
                         <div>No Participants Created...</div>
                     ) : (
                         this.props.participants.map((participant, index) => {

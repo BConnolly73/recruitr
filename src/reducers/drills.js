@@ -7,6 +7,7 @@ export const drillsReducer = (state = drillsReducerDefaultState, action) => {
                 action.drill
             ];
         case 'SET_DRILLS':
+            console.log('Reducer', action.drills);
             return action.drills;
         case 'EDIT_DRILL':
             return state.map((drill) => {

@@ -6,7 +6,6 @@ export const addDrill = (drill) => ({
 });
 
 export const startAddDrill = (drillData = {}) => {
-    console.log("HERE", drillData);
     return (dispatch, getState) => {
         const uid = getState().auth.uid;
         const {
@@ -38,12 +37,14 @@ export const startSetDrills = () => {
         return database.ref(`drills`).once('value').then((snapshot) => {
             const drills = [];
             snapshot.forEach((drill) => {
+                console.log(drill.val());
                 drills.push({
                     id: drill.key,
                     ...drill.val()
                 });
             });
 
+            console.log(drills);
             dispatch(setDrills(drills));
         })
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SkillAddModal from './SkillAddModal';
+import MeasurementAddModal from './MeasurementAddModal';
 
 export default class DrillForm extends React.Component {
     constructor(props) {
@@ -109,7 +109,7 @@ export default class DrillForm extends React.Component {
 
                 </form>
 
-                <SkillAddModal handleClearSelectedOption={this.onSkillConfirm} open_modal={this.state.open_modal}/>
+                <MeasurementAddModal handleClearSelectedOption={this.onSkillConfirm} open_modal={this.state.open_modal}/>
             </div>
         )
     }
