@@ -11,10 +11,10 @@ export const startAddDrill = (drillData = {}) => {
         const {
             name = '',
             description = '',
-            measurements = []
+            roles = []
         } = drillData;
 
-        const drill = { name, description, measurements };
+        const drill = { name, description, roles };
 
         return database.ref(`drills`).push(drill).then((ref) => {
             dispatch(addDrill({
@@ -37,14 +37,11 @@ export const startSetDrills = () => {
         return database.ref(`drills`).once('value').then((snapshot) => {
             const drills = [];
             snapshot.forEach((drill) => {
-                console.log(drill.val());
                 drills.push({
                     id: drill.key,
                     ...drill.val()
                 });
             });
-
-            console.log(drills);
             dispatch(setDrills(drills));
         })
     }

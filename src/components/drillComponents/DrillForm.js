@@ -1,6 +1,7 @@
 import React from 'react';
 
 import MeasurementAddModal from './MeasurementAddModal';
+import PlayerAddModal from './PlayerAddModal';
 
 export default class DrillForm extends React.Component {
     constructor(props) {
@@ -9,8 +10,9 @@ export default class DrillForm extends React.Component {
         this.state = {
             name: props.drill ? props.drill.name : '',
             description: props.drill ? props.drill.description : '',
-            measurements: props.drill ? props.drill.measurements : [],
-            open_modal: false,
+            roles: props.drill ? props.drill.roles : [],
+            open_measurement_modal: false,
+            open_role_modal: false,
             error: ''
         };
     }
@@ -33,33 +35,62 @@ export default class DrillForm extends React.Component {
             this.setState(() => ({ error: 'Please provide a name' }));
         } else if (!this.state.description) {
             this.setState(() => ({ error: 'Please provide a description' }));
-        } else if (this.state.measurements.length === 0) {
-            this.setState(() => ({ error: 'Please provide at least one measurement' }));
+        } else if (!this.state.roles) {
+            this.setState(() => ({ error: 'Please provide at least role ' }));
         } else {
             this.setState(() => ({ error: '' }));
             this.props.onSubmit({
                 name: this.state.name,
                 description: this.state.description,
-                measurements: this.state.measurements
+                roles: this.state.roles
             });
         }
     }
 
-    onSkillConfirm = (measurement) => {
-        if (measurement) {
-            this.setState((prevState) => ({ 
-                open_modal : false,
-                measurements: prevState.measurements.concat(measurement)
+    openRoleModal = (e) => {
+        e.preventDefault();
+        this.setState(() => ({ open_role_modal : true }));
+    }
+
+    onRoleConfirm = (role) => {
+        if (role) {
+            this.setState((prevState) => ({
+                open_role_modal : false,
+                roles: prevState.roles.concat(role)
             }));
         } else {
-            this.setState(() => ({ open_modal : false }))
+            this.setState(() => ({ open_role_modal : false}))
         }
     }
 
-    openSkillModal = (e) => {
+    openMeasurementModal = (e) => {
         e.preventDefault();
+        this.setState(() => ({ open_measurement_modal : true }));
+    }
 
-        this.setState(() => ({ open_modal : true }));
+    onMeasurementConfirm = (measurement) => {
+        if (measurement) {
+            this.setState((prevState) => ({ 
+                open_measurement_modal : false
+            }));
+
+            var current_roles = this.state.roles;
+            if (!current_roles[measurement.role].measurements) {
+                current_roles[measurement.role].measurements = [];
+            }
+
+            current_roles[measurement.role].measurements.push({
+                'name' : measurement.name,
+                'type' : measurement.type
+            });
+
+            this.setState(() => ({
+                roles: current_roles
+            }));
+
+        } else {
+            this.setState(() => ({ open_measurement_modal : false }))
+        }
     }
 
     render() {
@@ -81,24 +112,19 @@ export default class DrillForm extends React.Component {
                         onChange={this.onDescriptionChange}
                     />
 
-                    <button type="button" onClick={this.openSkillModal}>Add Measurement</button>
+                    <button type="button" onClick={this.openRoleModal}>Add Player Role</button>
 
                     {
-                        (this.state.measurements.length > 0) ? (
+                        this.state.roles.length > 0
+                        && <button type="button" onClick={this.openMeasurementModal}>Add Measurement</button>
+                    }
+
+                    {
+                        (this.state.roles.length > 0) ? (
                             <div>
-                                {this.state.measurements.map((measurement, index) => {
-                                    return (
-                                        <div key={index}>
-                                            <p>Measurement Name: {measurement.name}</p>
-                                            <p>Measurement Type: {measurement.type}</p>
-                                            <p>*******</p>
-                                        </div>
-                                    )
-                                })}
                             </div>
                         ) : (
                             <div>
-                                <p>No Measurements</p>
                             </div>
                         )
                     }
@@ -109,7 +135,16 @@ export default class DrillForm extends React.Component {
 
                 </form>
 
-                <MeasurementAddModal handleClearSelectedOption={this.onSkillConfirm} open_modal={this.state.open_modal}/>
+                <MeasurementAddModal
+                    handleMeasurementModalClose={this.onMeasurementConfirm}
+                    open_measurement_modal={this.state.open_measurement_modal}
+                    roles={this.state.roles}
+                />
+
+                <PlayerAddModal
+                    handleRoleModalClose={this.onRoleConfirm}
+                    open_role_modal={this.state.open_role_modal}
+                />
             </div>
         )
     }
