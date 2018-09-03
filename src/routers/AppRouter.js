@@ -12,6 +12,7 @@ import EditParticipantPage from './../components/participantComponents/EditParti
 import NewDrillPage from './../components/drillComponents/NewDrillPage.js';
 
 import SubmitRecordDashboards from './../components/submissionComponents/SubmitRecordDashboard';
+import SubmitDrillForm from './../components/submissionComponents/SubmitDrillForm';
 
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -29,6 +30,7 @@ const AppRouter = () => (
                 <PrivateRoute path="/edit_participant/:id" component={EditParticipantPage}/>
                 <PrivateRoute path="/new_drill" component={NewDrillPage} exact={true}/>
                 <PrivateRoute path="/submit_dashboard" component={SubmitRecordDashboards} exact={true}/>
+                <PrivateRoute path="/submit/:id" component={SubmitDrillForm} />
 
                 <Route component={NotFoundPage} />
             </Switch>

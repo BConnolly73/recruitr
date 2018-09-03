@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import selectAllDrills from '../../selectors/drills';
 
-export  class SubmitRecordDashboard extends React.Component {
+class SubmitRecordDashboard extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -17,15 +17,16 @@ export  class SubmitRecordDashboard extends React.Component {
                             {this.props.drills.map((drill) => {
                                 return (
                                     <div key={drill.id}>
-                                        <p>Drill named {drill.name} described by {drill.description}</p>
-                                        {drill.measurements && drill.measurements.map((measurement, index) => {
-                                            return (
-                                                <div key={index}>
-                                                    <p>Measurement: {measurement.name}</p>
-                                                    <p>Type: {measurement.type}</p>
-                                                </div>
-                                            )
-                                        })}
+                                        <button
+                                            onClick={() => {
+                                                this.props.history.push({
+                                                    pathname: `/submit/${drill.id}`,
+                                                    state: {
+                                                        drill: drill
+                                                    }
+                                                })}
+                                            }
+                                        >{drill.name}</button>
                                     </div>
                                 )
                             })}
@@ -42,7 +43,6 @@ export  class SubmitRecordDashboard extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         drills: selectAllDrills(state.drills)
     }
