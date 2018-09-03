@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Select from 'react-select';
+
 import selectAllParticipants from '../../selectors/participants';
 
 class SubmitDrillForm extends React.Component {
@@ -8,35 +10,17 @@ class SubmitDrillForm extends React.Component {
         super(props);
 
         this.state = {
-            roles: props.drill ? props.drill.roles : []
+            roles_to_participants: []
         }
-    }
 
-    onOneToTenChange = (e) => {
-        const value = e.target.value;
-        //this.setState(() => ({}));
-    }
-
-    onTimeChange = (e) => {
-        const time = e.target.value;
-        //this.setState(() => ({}));
-    }
-
-    onCountChange = (e) => {
-        const count = e.target.value;
-        //this.setState(() => ({}));
-    }
-
-    onRatioChange = (e) => {
-        const ratio = e.target.value;
-        //this.setState(() => ({}));
+        this.participant_options = this.buildParticipantOptions();
     }
 
     buildMeasurementInput(type) {
         if (type == 1) {
             return (
                 <div>
-                    <select onChange={this.onOneToTenChange}>
+                    <select>
                         <option value={0}>0</option>
                         <option value={1}>1</option>
                         <option value={2}>2</option>
@@ -75,7 +59,29 @@ class SubmitDrillForm extends React.Component {
     }
 
     onSubmit() {
-        console.log(this.state);
+        console.log('Submit');
+    }
+
+    buildParticipantOptions() {
+        var participant_options = [];
+        let i = 0;
+
+        for (i = 0 ; i < this.props.participants.length ; i++) {
+            participant_options[i] = {
+                'value': i,
+                'label': this.props.participants[i].first_name + ' ' + this.props.participants[i].last_name
+            };
+        }
+
+        console.log(participant_options);
+
+        return participant_options;
+    }
+
+    onParticipantChange = (selector, selection) => {
+        let old_roles = this.state.roles_to_participants;
+        old_roles[selector] = selection.value;
+        this.setState(() => ({ roles_to_participants : old_roles }));
     }
 
     render() {
@@ -86,28 +92,14 @@ class SubmitDrillForm extends React.Component {
                 {
                     this.props.drill.roles.map((role, index) => {
                         return (
-                            <div key={index}>
+                            <div className="sumbit_drill_role_container" key={index}>
                                 <p>Role Name: {role.name}</p>
-                                <select>
-                                    <option value={0}>Select Participants</option>
-                                    {
-                                        this.props.participants.map((player, index) => {
-                                            return (
-                                                <option key={index+1} value={index + 1}>{player.first_name} {player.last_name}</option>
-                                            )
-                                        })
-                                    }
-                                </select>
-                                {
-                                    role.measurements.map((measurement, index) => {
-                                        return (
-                                            <div key={index}>
-                                                <p>Measurement: {measurement.name}</p>
-                                                {this.buildMeasurementInput(measurement.type)}
-                                            </div>
-                                        )
-                                    })
-                                }
+                                <Select
+                                    onChange={this.onParticipantChange.bind(this, index)}
+                                    options={this.participant_options}
+                                    placeholder={'Select a Player'}
+                                    name={`participant_selector_${index}`}
+                                />
                             </div>
                         )
                     })
