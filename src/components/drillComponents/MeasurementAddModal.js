@@ -93,7 +93,6 @@ export default class MeasurementAddModal extends React.Component {
                             <option value={1}> Out of 10 </option>
                             <option value={2}> Time </option>
                             <option value={3}> Count </option>
-                            <option value={4}> Ratio </option>
                         </select>
 
                         <select id="new_measurement_role" onChange={this.onMeasurementRoleChange}>
