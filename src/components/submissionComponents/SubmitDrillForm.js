@@ -6,6 +6,8 @@ import InputNumber from 'rc-input-number';
 import moment from 'moment';
 
 import selectAllParticipants from '../../selectors/participants';
+import { startAddResults } from '../../actions/results';
+
 
 class SubmitDrillForm extends React.Component {
     constructor(props) {
@@ -130,34 +132,20 @@ class SubmitDrillForm extends React.Component {
         let i = 0;
         let j = 0;
         
-        for (i = 0; i < this.props.drill.roles.length; i++) {
-            const current_participant = this.getParticipantByIndex(i, props);
+        for (i = 0; i < this.state.roles_to_participants.length; i++) {
+            const current_participant = this.getParticipantByIndex(this.state.roles_to_participants[i], props);
             const current_role = this.getRoleNameByIndex(i, props);
             console.log(`Creating for participant ${current_participant.first_name} of role ${current_role.name}`);
 
-            let submit_data = {
-                'results': [
-                    {
-                        'drill_id': this.props.drill.id,
-                        'roles': [
-                            {
-                                'role_name': current_role.name,
-                                'measurements': []
-                            }
-                        ]
-                    }
-                ]
-            };
-
             for (j = 0; j < this.state.roles_to_measurements[i].length; j++) {
-                submit_data['results'][0]['roles'][0]['measurements'].push({
-                    'measurement_name': current_role['measurements'][j].name,
+                const submit_data = {
                     'value': this.state.roles_to_measurements[i][j],
                     'time': moment().unix()
-                })
-            }
+                };
 
-            console.log(submit_data);
+                let firebase_path = `results/${current_participant.id}/${this.props.drill.id}_${this.props.drill.name}/${this.props.drill.id}_${i}_${current_role.name}/${current_role['measurements'][j].name}`;
+                this.props.startAddResults(submit_data, firebase_path);
+            }
         }
     }
 
@@ -240,4 +228,8 @@ const mapStateToProps = (state, props) => {
     }
 };
 
-export default connect(mapStateToProps, undefined)(SubmitDrillForm);
+const mapDispatchToProps = (dispatch) => ({
+    startAddResults: (result, path) => dispatch(startAddResults(result, path))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitDrillForm);
