@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Select from 'react-select';
 import InputNumber from 'rc-input-number';
+import moment from 'moment';
 
 import selectAllParticipants from '../../selectors/participants';
 
@@ -124,15 +125,48 @@ class SubmitDrillForm extends React.Component {
     }
 
     createSubmitObject(props, state) {
-        let submit_data = {
-            measurements: [
-                {
-                    drill_id: props.drill.id
-                }
-            ]
-        };
+        console.log(props);
+        console.log(state);
+        let i = 0;
+        let j = 0;
+        
+        for (i = 0; i < this.props.drill.roles.length; i++) {
+            const current_participant = this.getParticipantByIndex(i, props);
+            const current_role = this.getRoleNameByIndex(i, props);
+            console.log(`Creating for participant ${current_participant.first_name} of role ${current_role.name}`);
 
-        console.log(submit_data);
+            let submit_data = {
+                'results': [
+                    {
+                        'drill_id': this.props.drill.id,
+                        'roles': [
+                            {
+                                'role_name': current_role.name,
+                                'measurements': []
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            for (j = 0; j < this.state.roles_to_measurements[i].length; j++) {
+                submit_data['results'][0]['roles'][0]['measurements'].push({
+                    'measurement_name': current_role['measurements'][j].name,
+                    'value': this.state.roles_to_measurements[i][j],
+                    'time': moment().unix()
+                })
+            }
+
+            console.log(submit_data);
+        }
+    }
+
+    getParticipantByIndex(index, props) {
+        return props.participants[index];
+    }
+
+    getRoleNameByIndex(index, props) {
+        return props.drill.roles[index];
     }
 
     buildParticipantOptions() {
