@@ -1,4 +1,6 @@
 import React from 'react';
+import Camera from 'react-camera';
+import { relative } from 'upath';
 
 export default class ParticipantForm extends React.Component {
     constructor(props) {
@@ -14,7 +16,16 @@ export default class ParticipantForm extends React.Component {
             about: props.participant ? props.participant.about : '',
             error: ''
         };
+
+        this.takePicture = this.takePicture.bind(this);
     }
+
+    takePicture() {
+        this.camera.capture().then(blob => {
+            this.img.src = URL.createObjectURL(blob);
+            this.img.onload = () => { URL.revokeObjectURL(this.src); }
+        });
+      }
 
     componentDidMount() {
         document.getElementById('year').selectedIndex = this.state.year;
@@ -182,6 +193,24 @@ export default class ParticipantForm extends React.Component {
                     onChange={this.onAboutChange}
                 ></textarea>
 
+                <div style={{position: 'relative'}}>
+                    <Camera
+                        style={camera_style.preview}
+                        ref={(cam) => {
+                            this.camera = cam;
+                        }}
+                    />
+                    <div style={camera_style.captureContainer} onClick={this.takePicture}>
+                        <div style={camera_style.captureButton} />
+                    </div>
+                    <img
+                        style={camera_style.captureImage}
+                        ref={(img) => {
+                            this.img = img;
+                        }}
+                    />
+                </div>
+
                 <div>
                     <button>Save Participant</button>
                 </div>
@@ -191,3 +220,27 @@ export default class ParticipantForm extends React.Component {
     }
 }
 
+const camera_style = {
+    preview: {
+      position: 'relative',
+    },
+    captureContainer: {
+      display: 'flex',
+      position: 'absolute',
+      justifyContent: 'center',
+      zIndex: 1,
+      bottom: 0,
+      width: '50%'
+    },
+    captureButton: {
+      backgroundColor: '#fff',
+      borderRadius: '50%',
+      height: 56,
+      width: 56,
+      color: '#000',
+      margin: 20
+    },
+    captureImage: {
+      width: '50%',
+    }
+  };
