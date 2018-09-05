@@ -10,14 +10,15 @@ class SubmitRecordDashboard extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="content-container">
                 {
                     this.props.drills.length > 0 ? (
-                        <div>
+                        <div className="drill-button-container">
                             {this.props.drills.map((drill) => {
                                 return (
                                     <div key={drill.id}>
                                         <button
+                                            className="drill-select-button__button"
                                             onClick={() => {
                                                 this.props.history.push({
                                                     pathname: `/submit/${drill.id}`,
