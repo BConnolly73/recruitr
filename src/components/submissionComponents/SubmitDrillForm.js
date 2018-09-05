@@ -179,7 +179,7 @@ class SubmitDrillForm extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="content-container">
                 <h1>{this.props.drill.name}</h1>
                 <h3>{this.props.drill.description}</h3>
                 {

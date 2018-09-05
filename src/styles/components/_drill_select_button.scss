@@ -1,7 +1,5 @@
 .drill-button-container {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
 }
 
 .drill-select-button__button {
@@ -25,4 +23,8 @@
 
 .drill-select-button__button:hover {
     background: #7eb3d6;
+}
+
+.drill-select-button__container {
+    margin: auto;
 }

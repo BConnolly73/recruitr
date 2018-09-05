@@ -16,8 +16,8 @@ export class NewParticipantPage extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>New Participant</h1>
+            <div className="content-container">
+                <h1 className="form__header">New Participant</h1>
                 <ParticipantForm onSubmit={this.onSubmit}/>
             </div>
         )
