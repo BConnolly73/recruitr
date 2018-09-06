@@ -192,7 +192,7 @@ class SubmitDrillForm extends React.Component {
                     this.props.drill.roles.map((role, role_index) => {
                         return (
                             <div className="sumbit_drill_role_container" key={role_index}>
-                                <p>________________________________________________________________________</p>
+                                <p>____________________________</p>
                                 <p>Role Name: {role.name}</p>
                                 <Select
                                     onChange={this.onParticipantChange.bind(this, role_index)}
