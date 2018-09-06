@@ -16,7 +16,8 @@ class SubmitDrillForm extends React.Component {
         this.state = {
             roles_to_participants: [],
             roles_to_measurements: [],
-            error: ''
+            error: '',
+            success: ''
         }
 
         this.participant_options = this.buildParticipantOptions();
@@ -120,6 +121,7 @@ class SubmitDrillForm extends React.Component {
         if (!error) {
             this.setState(() => ({ error: '' }));
             console.log('Valid submit');
+            this.setState(() => ({ success: `Result Submitted` }));
             this.createSubmitObject(this.props, this.state);
         } else {
             console.log('Error submitting');
@@ -127,15 +129,12 @@ class SubmitDrillForm extends React.Component {
     }
 
     createSubmitObject(props, state) {
-        console.log(props);
-        console.log(state);
         let i = 0;
         let j = 0;
         
         for (i = 0; i < this.state.roles_to_participants.length; i++) {
             const current_participant = this.getParticipantByIndex(this.state.roles_to_participants[i], props);
             const current_role = this.getRoleNameByIndex(i, props);
-            console.log(`Creating for participant ${current_participant.first_name} of role ${current_role.name}`);
 
             for (j = 0; j < this.state.roles_to_measurements[i].length; j++) {
                 const submit_data = {
@@ -147,6 +146,8 @@ class SubmitDrillForm extends React.Component {
                 this.props.startAddResults(submit_data, firebase_path);
             }
         }
+
+        this.clearForm();
     }
 
     getParticipantByIndex(index, props) {
@@ -177,15 +178,21 @@ class SubmitDrillForm extends React.Component {
         this.setState(() => ({ roles_to_participants : old_roles }));
     }
 
+    clearForm() {
+        this.setState(() => ({ roles_to_measurements: [] }));
+        this.setState(() => ({ roles_to_participants: [] }));
+    }
+
     render() {
         return (
             <div className="content-container">
                 <h1>{this.props.drill.name}</h1>
-                <h3>{this.props.drill.description}</h3>
+                <h5>{this.props.drill.description}</h5>
                 {
                     this.props.drill.roles.map((role, role_index) => {
                         return (
                             <div className="sumbit_drill_role_container" key={role_index}>
+                                <p>________________________________________________________________________</p>
                                 <p>Role Name: {role.name}</p>
                                 <Select
                                     onChange={this.onParticipantChange.bind(this, role_index)}
@@ -194,7 +201,6 @@ class SubmitDrillForm extends React.Component {
                                     name={`participant_selector_${role_index}`}
                                 />
 
-                                
                                 <div className="submit_drill_measurements_container" >
                                 {
                                     role.measurements.map((measurement, measurement_index) => {
@@ -213,6 +219,7 @@ class SubmitDrillForm extends React.Component {
                 }
 
                 {this.state.error && (<p className="form__error">ERROR: {this.state.error}</p>)}
+                {this.state.success && (<p className="form__error">{this.state.success}</p>)}
                 <button onClick={this.onSubmit}>Submit</button>
             </div>
         )
