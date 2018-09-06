@@ -14,3 +14,14 @@
 .form__header {
     justify-content: center;
 }
+
+.sumbit_drill_role_container {
+    border-top: 1px solid darkslategrey;
+    margin-top: $m-size;
+}
+
+.submit_button {
+    margin-top: $l-size;
+    margin-bottom: $l-size;
+    padding: $s-size $s-size $s-size $s-size;
+}

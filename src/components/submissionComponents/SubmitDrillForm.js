@@ -192,7 +192,6 @@ class SubmitDrillForm extends React.Component {
                     this.props.drill.roles.map((role, role_index) => {
                         return (
                             <div className="sumbit_drill_role_container" key={role_index}>
-                                <p>____________________________</p>
                                 <p>Role Name: {role.name}</p>
                                 <Select
                                     onChange={this.onParticipantChange.bind(this, role_index)}
@@ -220,7 +219,7 @@ class SubmitDrillForm extends React.Component {
 
                 {this.state.error && (<p className="form__error">ERROR: {this.state.error}</p>)}
                 {this.state.success && (<p className="form__error">{this.state.success}</p>)}
-                <button onClick={this.onSubmit}>Submit</button>
+                <button className="submit_button" onClick={this.onSubmit}>Submit</button>
             </div>
         )
     }
