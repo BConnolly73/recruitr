@@ -15,13 +15,17 @@ class SubmitDrillForm extends React.Component {
 
         this.state = {
             roles_to_participants: [],
-            roles_to_measurements: [],
+            roles_to_measurements: [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], // Fix this please
             error: '',
             success: ''
         }
 
         this.participant_options = this.buildParticipantOptions();
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    onValueChange = (role_index, measurement_index, value) => {
+        this.addMeasurementToState(role_index, measurement_index, value)
     }
 
     addMeasurementToState = (role_index, measurement_index, value) => {
@@ -39,60 +43,6 @@ class SubmitDrillForm extends React.Component {
         this.setState(() => ({ roles_to_measurements: old_measurement }));
     }
 
-    onOneToTenChange = (role_index, measurement_index, value) => {
-        this.addMeasurementToState(role_index, measurement_index, value)
-    }
-
-    onCountChange = (role_index, measurement_index, value) => {
-        this.addMeasurementToState(role_index, measurement_index, value)
-    }
-
-    onTimeChange = (role_index, measurement_index, value) => {
-        this.addMeasurementToState(role_index, measurement_index, value)
-    }
-
-    buildMeasurementInput(type, role_index, measurement_index) {
-        if (type == 1) { //One to ten
-            return (
-                <div>
-                    <InputNumber
-                        min={0}
-                        max={10}
-                        placeholder={'Enter Value'}
-                        precision={0}
-                        onChange={this.onOneToTenChange.bind(this, role_index, measurement_index)}
-                    />
-                </div>
-            )
-        } else if (type == 2) { //Time
-            return (
-                <div>
-                    <InputNumber
-                        min={0}
-                        max={10000}
-                        precision={2}
-                        placeholder={'Enter Time'}
-                        onChange={this.onTimeChange.bind(this, role_index, measurement_index)}
-                    />
-                </div>
-            )
-        } else if (type == 3) { //Count
-            return (
-                <div>
-                    <InputNumber
-                        min={0}
-                        max={100}
-                        placeholder={'Enter Count'}
-                        precision={0}
-                        onChange={this.onCountChange.bind(this, role_index, measurement_index)}
-                    />
-                </div>
-            )
-        } else {
-            return (<div>Nothing</div>)
-        }
-    }
-
     // Validate the data
     onSubmit() {
         let i = 0;
@@ -102,6 +52,7 @@ class SubmitDrillForm extends React.Component {
         // Make sure all roles are filled in state
         for (i = 0; i < this.props.drill.roles.length; i++) {
             const current_role = this.props.drill.roles[i];
+            //TODO: Fix this
             if (this.state.roles_to_participants[i] === undefined) {
                 this.setState(() => ({ error: 'Select a participant for each role in the drill' }));
                 error = true;
@@ -120,9 +71,11 @@ class SubmitDrillForm extends React.Component {
         // Once all good
         if (!error) {
             this.setState(() => ({ error: '' }));
-            console.log('Valid submit');
             this.setState(() => ({ success: `Result Submitted` }));
             this.createSubmitObject(this.props, this.state);
+            setTimeout(() => {
+                this.setState(() => ({ success: `` }));
+            }, 2000);
         } else {
             console.log('Error submitting');
         }
@@ -133,10 +86,10 @@ class SubmitDrillForm extends React.Component {
         let j = 0;
         
         for (i = 0; i < this.state.roles_to_participants.length; i++) {
-            const current_participant = this.getParticipantByIndex(this.state.roles_to_participants[i], props);
+            const current_participant = this.getParticipantByIndex(this.state.roles_to_participants[i].value - 1, props);
             const current_role = this.getRoleNameByIndex(i, props);
 
-            for (j = 0; j < this.state.roles_to_measurements[i].length; j++) {
+            for (j = 0; j < this.props.drill.roles[i].measurements.length; j++) {
                 const submit_data = {
                     'value': this.state.roles_to_measurements[i][j],
                     'time': moment().unix()
@@ -160,11 +113,16 @@ class SubmitDrillForm extends React.Component {
 
     buildParticipantOptions() {
         var participant_options = [];
-        let i = 0;
+        let i = 1;
 
-        for (i = 0 ; i < this.props.participants.length ; i++) {
-            participant_options[i] = {
-                'value': i,
+        participant_options[0] = {
+            'value': 0,
+            'label': 'Select a Player'
+        };
+
+        for (i = 0 ; i < this.props.participants.length; i++) {
+            participant_options[i+1] = {
+                'value': i + 1,
                 'label': this.props.participants[i].first_name + ' ' + this.props.participants[i].last_name
             };
         }
@@ -174,13 +132,19 @@ class SubmitDrillForm extends React.Component {
 
     onParticipantChange = (selector, selection) => {
         let old_roles = this.state.roles_to_participants;
-        old_roles[selector] = selection.value;
+        old_roles[selector] = selection;
         this.setState(() => ({ roles_to_participants : old_roles }));
     }
 
     clearForm() {
-        this.setState(() => ({ roles_to_measurements: [] }));
-        this.setState(() => ({ roles_to_participants: [] }));
+        let i = 0;
+        let empty_array = [];
+        for (i = 0; i < this.props.drill.roles.length; i++) {
+            empty_array.push(this.participant_options[0]);
+        }
+
+        this.setState(() => ({ roles_to_measurements: [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]] }));
+        this.setState(() => ({ roles_to_participants: empty_array }));
     }
 
     render() {
@@ -192,12 +156,13 @@ class SubmitDrillForm extends React.Component {
                     this.props.drill.roles.map((role, role_index) => {
                         return (
                             <div className="sumbit_drill_role_container" key={role_index}>
-                                <p>Role Name: {role.name}</p>
+                                <h4>Role Name: {role.name}</h4>
                                 <Select
                                     onChange={this.onParticipantChange.bind(this, role_index)}
                                     options={this.participant_options}
                                     placeholder={'Select a Player'}
                                     name={`participant_selector_${role_index}`}
+                                    value={this.state.roles_to_participants[role_index]}
                                 />
 
                                 <div className="submit_drill_measurements_container" >
@@ -206,7 +171,19 @@ class SubmitDrillForm extends React.Component {
                                         return (
                                             <div key={measurement_index}>
                                                 <p>Measurement: {measurement.name}</p>
-                                                {this.buildMeasurementInput(measurement.type, role_index, measurement_index)}
+                                                {
+                                                    //this.buildMeasurementInput(measurement.type, role_index, measurement_index)
+                                                }
+                                                {
+                                                    <InputNumber
+                                                        min={0}
+                                                        max={(measurement.type == 1) ? 10 : 100000}
+                                                        precision={(measurement.type == 1) ? 0 : 2}
+                                                        placeholder={(measurement.type == 1) ? 'Enter Value' : 'Enter Time'}
+                                                        onChange={this.onValueChange.bind(this, role_index, measurement_index)}
+                                                        value={this.state.roles_to_measurements[role_index][measurement_index]}
+                                                    />
+                                                }
                                             </div>
                                         )
                                     })
