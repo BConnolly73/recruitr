@@ -6,7 +6,7 @@ const DashboardPage = (props) => (
         <BigMenuButton name={"Create Participant"} onClick={() => {props.history.push('/new_participant')}}/>
         <BigMenuButton name={"View Participant"} onClick={() => {props.history.push('/participants')}}/>
         <BigMenuButton name={"Submit Results"} onClick={() => {props.history.push('/submit_dashboard')}}/>
-        <BigMenuButton name={"Review Tryout Results"} onClick={() => {alert("REVIEW")}}/>
+        <BigMenuButton name={"Review Tryout Results"} onClick={() => {props.history.push('/review')}}/>
 
         <BigMenuButton name={"Create Drill"} onClick={() => {props.history.push('/new_drill')}}/>
     </div>

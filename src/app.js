@@ -6,8 +6,10 @@ import configureStore from './store/configureStore';
 import { firebase } from './firebase/firebase';
 import { login, logout } from './actions/auth';
 import LoadingPage from './components/LoadingPage';
+
 import { startSetParticipants } from './actions/participants';
 import { startSetDrills } from './actions/drills';
+import { startSetResults } from './actions/results.js';
 
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
@@ -35,10 +37,12 @@ firebase.auth().onAuthStateChanged((user) => {
         store.dispatch(login(user.uid));
         store.dispatch(startSetParticipants()).then(() => {
             store.dispatch(startSetDrills()).then(() => {
-                renderApp();
-                if (history.location.pathname === '/') {
-                    history.push('/dashboard');
-                }
+                store.dispatch(startSetResults()).then(() => {
+                    renderApp();
+                    if (history.location.pathname === '/') {
+                        history.push('/dashboard');
+                    }
+                })
             })
         });
     } else {

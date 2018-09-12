@@ -185,6 +185,9 @@ export default class ParticipantForm extends React.Component {
                     <option
                         value={2}
                     >Royal City Quidditch</option>
+                    <option
+                        value={3}
+                    >Any</option>
                 </select>
 
                 <textarea
