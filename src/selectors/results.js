@@ -8,4 +8,4 @@ const getAllResults = (results) => {
     return organized;
 }
 
-export { getAllResults as default };
+export { getAllResults as default};

@@ -1,4 +1,4 @@
-import  database from '../firebase/firebase';
+import database from '../firebase/firebase';
 
 const updateAverageResults = () => {
     database.ref('results').on('value', (snap) => {
@@ -15,6 +15,7 @@ const updateAverageResults = () => {
         average_result = averageAllParticipantsValues(average_result);
 
         database.ref('average').set(average_result);
+        return average_result;
     });
 }
 
