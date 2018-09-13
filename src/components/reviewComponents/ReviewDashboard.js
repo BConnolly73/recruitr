@@ -59,8 +59,8 @@ class ReviewDashboard extends React.Component {
 
     render() {
         return (
-            <div>
-                <p>In the review dashboard</p>
+            <div className="content-container review_page_container">
+                <h1 className="review_header">Tryout Results</h1>
                 {this.props.participants.map((player) => {
                     return (
                         <PlayerPanel 

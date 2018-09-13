@@ -101,6 +101,9 @@ export default class PlayerModal extends React.Component {
         return this.buildDrillTabs(structured_drills);
     }
 
+    //TODO:
+    // - Pass list of expected roles to say nothing avaible
+    // - Find error with player average calc
     buildDrillTabs(drills) {
         console.log(drills);
         return (
@@ -108,22 +111,24 @@ export default class PlayerModal extends React.Component {
             {
                 drills.map((drill) => {
                     return (
-                        <TabPanel>
+                        <TabPanel key={drill.id}>
                         {
                             drill.roles !== undefined ? (
                                 <div>
                                     {
                                         drill.roles.map((role) => {
                                             return (
-                                                <div>
+                                                <div className="role_container" key={role.role_id}>
                                                     <b>{role.role_id.substring(23, role.role_id.length)}</b>
                                                     {
-                                                        role.measurements.map((metric) => {
+                                                        role.measurements.map((metric, metric_index) => {
                                                             return (
-                                                                <div>
+                                                                <div className="measurement_container" key={metric_index}>
                                                                     <p>{metric.measurement}</p>
-                                                                    <p>Player Average: {parseFloat(metric.values.player_average).toFixed(2)}</p>
-                                                                    <p>Tryout Average: {parseFloat(metric.values.total_average).toFixed(2)}</p>
+                                                                    <div className="measurement_container_no_title">
+                                                                        <p>Player Average: {parseFloat(metric.values.player_average).toFixed(2)}</p>
+                                                                        <p>Tryout Average: {parseFloat(metric.values.total_average).toFixed(2)}</p>
+                                                                    </div>
                                                                 </div>
                                                             )
                                                         })
@@ -154,12 +159,16 @@ export default class PlayerModal extends React.Component {
                 closeTimeoutMS={200}
                 className="modal"
             >
-                <h3 className="modal__title">{(this.props.player) ? this.props.player.first_name + ' ' + this.props.player.last_name : ''}</h3>
-                <h4>{this.props.player && this.props.player.about}</h4>
-                <h4>{this.props.player && this.props.player.email}</h4>
-                <h5>Position: {this.props.player && this.getPositionName(this.props.player.position)}</h5>
-                <h5>Team: {this.props.player && this.getTeamName(this.props.player.team)}</h5>
-                <h5>Academic Year: {this.props.player && this.getYear(this.props.player.year)}</h5>
+                <div>
+                    <h3 className="modal__title">{(this.props.player) ? this.props.player.first_name + ' ' + this.props.player.last_name : ''}</h3>
+                    <div className="description_container">
+                        <p className="small_text">{this.props.player && this.props.player.about}</p>
+                        <p className="description_text">{this.props.player && this.props.player.email}</p>
+                        <p className="description_text">Position: {this.props.player && this.getPositionName(this.props.player.position)}</p>
+                        <p className="description_text">Team: {this.props.player && this.getTeamName(this.props.player.team)}</p>
+                        <p className="description_text">Academic Year: {this.props.player && this.getYear(this.props.player.year)}</p>
+                    </div>
+                </div>
 
                 <Tabs>
                     <TabList>

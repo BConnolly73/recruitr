@@ -1,0 +1,16 @@
+.review_page_container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+.player_panel {
+    margin: $s-size $s-size $s-size $s-size;
+    border: 1px solid black;
+    width: 20rem;
+    padding: 1px 2px 1px 2px;
+}
+
+.review_header {
+    margin: auto;
+    padding: 1px 2px 1px 2px;
+}

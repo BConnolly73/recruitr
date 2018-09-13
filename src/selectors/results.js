@@ -34,6 +34,8 @@ const getAllResults = (results) => {
                         }
 
                         final[participant_id][drill_id][role_id][measurement_id]['player_average'] = (sum/count);
+                        sum = 0;
+                        count = 0;
                     }
                 }
             }
