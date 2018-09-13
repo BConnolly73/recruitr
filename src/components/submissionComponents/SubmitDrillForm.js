@@ -143,7 +143,7 @@ class SubmitDrillForm extends React.Component {
             empty_array.push(this.participant_options[0]);
         }
 
-        this.setState(() => ({ roles_to_measurements: [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]] }));
+        this.setState(() => ({ roles_to_measurements: [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]] }));
         this.setState(() => ({ roles_to_participants: empty_array }));
     }
 

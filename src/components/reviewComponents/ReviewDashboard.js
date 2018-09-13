@@ -7,6 +7,7 @@ import PlayerModal from './PlayerModal';
 import getAllParticipants from '../../selectors/participants';
 import getAllResults from '../../selectors/results';
 import getAllAverage from '../../selectors/average';
+import getAllDrills from '../../selectors/drills';
 
 class ReviewDashboard extends React.Component {
     constructor(props) {
@@ -51,6 +52,7 @@ class ReviewDashboard extends React.Component {
                     handlePlayerModalClose={this.closeModal}
                     player={this.state.selected_player}
                     average={this.props.average}
+                    
                 />
             </div>
         )
@@ -61,7 +63,8 @@ const mapStateToProps = (state) => {
     return {
         participants: getAllParticipants(state.participants),
         results: getAllResults(state.results),
-        average: getAllAverage(state.average)
+        average: getAllAverage(state.average),
+        drills: getAllDrills(state.drill)
     }
 };
 

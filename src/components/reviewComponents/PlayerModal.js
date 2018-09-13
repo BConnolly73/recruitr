@@ -1,10 +1,10 @@
 import React from 'react';
 import Modal from 'react-modal';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 export default class PlayerModal extends React.Component {
     constructor(props) {
         super(props);
-
         this.closeModal = this.closeModal.bind(this);
     }
 
@@ -61,6 +61,7 @@ export default class PlayerModal extends React.Component {
         }
     }
 
+
     render() {
         return (
             <Modal
@@ -77,7 +78,56 @@ export default class PlayerModal extends React.Component {
                 <h5>Team: {this.props.player && this.getTeamName(this.props.player.team)}</h5>
                 <h5>Academic Year: {this.props.player && this.getYear(this.props.player.year)}</h5>
 
-                
+                <Tabs>
+                    <TabList>
+                    {this.props.results &&
+                        this.props.results.map((drill) => {
+                            <Tab>{drill.id}</Tab>
+                        })
+                    }
+                    </TabList>
+
+                    <TabPanel>
+                    <p>
+                        <b>Mario</b>
+                    </p>
+                    </TabPanel>
+                    <TabPanel>
+                    <p>
+                        <b>Mario</b>
+                    </p>
+                    </TabPanel>
+                    <TabPanel>
+                    <p>
+                        <b>Mario</b>
+                    </p>
+                    </TabPanel>
+                    <TabPanel>
+                    <p>
+                        <b>Mario</b>
+                    </p>
+                    </TabPanel>
+                    <TabPanel>
+                    <p>
+                        <b>Mario</b>
+                    </p>
+                    </TabPanel>
+                    <TabPanel>
+                    <p>
+                        <b>Mario</b>
+                    </p>
+                    </TabPanel>
+                    <TabPanel>
+                    <p>
+                        <b>Mario</b>
+                    </p>
+                    </TabPanel>
+                    <TabPanel>
+                    <p>
+                        <b>Luigi</b> 
+                    </p>
+                    </TabPanel>
+                </Tabs>
 
                 <button className="button" onClick={this.closeModal}>OK</button>
             </Modal>
