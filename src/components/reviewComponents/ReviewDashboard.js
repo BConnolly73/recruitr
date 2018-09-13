@@ -6,13 +6,14 @@ import PlayerModal from './PlayerModal';
 
 import getAllParticipants from '../../selectors/participants';
 import getAllResults from '../../selectors/results';
+import getAllAverage from '../../selectors/average';
 
 class ReviewDashboard extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            selected_player: undefined
+            selected_player: undefined,
         };
 
         this.openModal = this.openModal.bind(this);
@@ -49,6 +50,7 @@ class ReviewDashboard extends React.Component {
                 <PlayerModal
                     handlePlayerModalClose={this.closeModal}
                     player={this.state.selected_player}
+                    average={this.props.average}
                 />
             </div>
         )
@@ -58,7 +60,8 @@ class ReviewDashboard extends React.Component {
 const mapStateToProps = (state) => {
     return {
         participants: getAllParticipants(state.participants),
-        results: getAllResults(state.results)
+        results: getAllResults(state.results),
+        average: getAllAverage(state.average)
     }
 };
 

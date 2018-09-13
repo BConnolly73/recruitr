@@ -1,5 +1,4 @@
 import database from '../firebase/firebase';
-import updateAverageResults from '../firebase/lifetime';
 
 export const addResults = (result) => ({
     type: 'ADD_RESULTS',
@@ -18,7 +17,6 @@ export const startAddResults = (resultData = [], path) => {
 }
 
 export const setResults = (results) => {
-    updateAverageResults();
     return {
         type: 'SET_RESULTS',
         results: results

@@ -10,6 +10,7 @@ import LoadingPage from './components/LoadingPage';
 import { startSetParticipants } from './actions/participants';
 import { startSetDrills } from './actions/drills';
 import { startSetResults } from './actions/results.js';
+import { startSetAverage } from './actions/average.js';
 
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
@@ -38,10 +39,13 @@ firebase.auth().onAuthStateChanged((user) => {
         store.dispatch(startSetParticipants()).then(() => {
             store.dispatch(startSetDrills()).then(() => {
                 store.dispatch(startSetResults()).then(() => {
-                    renderApp();
-                    if (history.location.pathname === '/') {
-                        history.push('/dashboard');
-                    }
+                    store.dispatch(startSetAverage()).then(() => {
+                        //console.log(store.getState());
+                        renderApp();
+                        if (history.location.pathname === '/') {
+                            history.push('/dashboard');
+                        }
+                    })
                 })
             })
         });
