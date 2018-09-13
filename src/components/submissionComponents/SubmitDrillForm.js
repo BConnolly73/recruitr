@@ -15,7 +15,7 @@ class SubmitDrillForm extends React.Component {
 
         this.state = {
             roles_to_participants: [],
-            roles_to_measurements: [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], // Fix this please
+            roles_to_measurements: [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], // Fix this please
             error: '',
             success: ''
         }
