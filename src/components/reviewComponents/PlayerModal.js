@@ -61,6 +61,89 @@ export default class PlayerModal extends React.Component {
         }
     }
 
+    structureDrillResultObject(results, drills) {
+        let structured_drills = [];
+
+        drills.map((drill, index) => {
+            let matched = false;
+            let structured_roles = [];
+
+            for (let [d_id, roles] of Object.entries(results)) {
+                if (d_id.substring(0, 20) === drill.id) {
+                    matched = true;
+                    for (let [r_id, measurements] of Object.entries(roles)) {
+                        let current_role = {
+                            'role_id': r_id,
+                            'measurements': []
+                        }
+
+                        for (let [m_id, values] of Object.entries(measurements)) {
+                            current_role.measurements.push({
+                                'measurement': m_id,
+                                'values': values
+                            });
+                        }
+
+                        structured_roles.push(current_role);
+                    }
+                }
+            }
+
+            if (matched) {
+                structured_drills.push({'roles': structured_roles});
+            } else {
+                structured_drills.push({});
+            }
+
+            matched = false;
+        });
+
+        return this.buildDrillTabs(structured_drills);
+    }
+
+    buildDrillTabs(drills) {
+        console.log(drills);
+        return (
+            <div>
+            {
+                drills.map((drill) => {
+                    return (
+                        <TabPanel>
+                        {
+                            drill.roles !== undefined ? (
+                                <div>
+                                    {
+                                        drill.roles.map((role) => {
+                                            return (
+                                                <div>
+                                                    <b>{role.role_id.substring(23, role.role_id.length)}</b>
+                                                    {
+                                                        role.measurements.map((metric) => {
+                                                            return (
+                                                                <div>
+                                                                    <p>{metric.measurement}</p>
+                                                                    <p>Player Average: {parseFloat(metric.values.player_average).toFixed(2)}</p>
+                                                                    <p>Tryout Average: {parseFloat(metric.values.total_average).toFixed(2)}</p>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            ) : (
+                                <p>No results for this drill</p>
+                            )
+                        }
+                        </TabPanel>
+                    )
+                })
+            }
+            </div>
+        )
+    }
 
     render() {
         return (
@@ -80,53 +163,18 @@ export default class PlayerModal extends React.Component {
 
                 <Tabs>
                     <TabList>
-                    {this.props.results &&
-                        this.props.results.map((drill) => {
-                            <Tab>{drill.id}</Tab>
+                    {
+                        this.props.drills.map((drill) => {
+                            return (
+                                <Tab key={drill.id}>{drill.name}</Tab>
+                            )
                         })
                     }
                     </TabList>
 
-                    <TabPanel>
-                    <p>
-                        <b>Mario</b>
-                    </p>
-                    </TabPanel>
-                    <TabPanel>
-                    <p>
-                        <b>Mario</b>
-                    </p>
-                    </TabPanel>
-                    <TabPanel>
-                    <p>
-                        <b>Mario</b>
-                    </p>
-                    </TabPanel>
-                    <TabPanel>
-                    <p>
-                        <b>Mario</b>
-                    </p>
-                    </TabPanel>
-                    <TabPanel>
-                    <p>
-                        <b>Mario</b>
-                    </p>
-                    </TabPanel>
-                    <TabPanel>
-                    <p>
-                        <b>Mario</b>
-                    </p>
-                    </TabPanel>
-                    <TabPanel>
-                    <p>
-                        <b>Mario</b>
-                    </p>
-                    </TabPanel>
-                    <TabPanel>
-                    <p>
-                        <b>Luigi</b> 
-                    </p>
-                    </TabPanel>
+                    {
+                        this.props.player && this.structureDrillResultObject(this.props.player.results, this.props.drills)
+                    }
                 </Tabs>
 
                 <button className="button" onClick={this.closeModal}>OK</button>
