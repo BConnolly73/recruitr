@@ -2,6 +2,7 @@ import React from 'react';
 
 import MeasurementAddModal from './MeasurementAddModal';
 import PlayerAddModal from './PlayerAddModal';
+import RoleAndMeasurementDisplay from './RoleAndMeasurementDisplay';
 
 export default class DrillForm extends React.Component {
     constructor(props) {
@@ -33,8 +34,6 @@ export default class DrillForm extends React.Component {
 
         if (!this.state.name) {
             this.setState(() => ({ error: 'Please provide a name' }));
-        } else if (!this.state.description) {
-            this.setState(() => ({ error: 'Please provide a description' }));
         } else if (!this.state.roles) {
             this.setState(() => ({ error: 'Please provide at least role ' }));
         } else {
@@ -54,6 +53,10 @@ export default class DrillForm extends React.Component {
 
     onRoleConfirm = (role) => {
         if (role) {
+            if (!role.measurements) {
+                role.measurements = [];
+            }
+
             this.setState((prevState) => ({
                 open_role_modal : false,
                 roles: prevState.roles.concat(role)
@@ -121,10 +124,12 @@ export default class DrillForm extends React.Component {
 
                     {
                         (this.state.roles.length > 0) ? (
-                            <div>
-                            </div>
+                            <RoleAndMeasurementDisplay
+                                roles={this.state.roles}
+                            />
                         ) : (
                             <div>
+                                <p>No roles</p>
                             </div>
                         )
                     }
