@@ -84,19 +84,24 @@ class SubmitDrillForm extends React.Component {
     createSubmitObject(props, state) {
         let i = 0;
         let j = 0;
-        
+
         for (i = 0; i < this.state.roles_to_participants.length; i++) {
             const current_participant = this.getParticipantByIndex(this.state.roles_to_participants[i].value - 1, props);
             const current_role = this.getRoleNameByIndex(i, props);
 
             for (j = 0; j < this.props.drill.roles[i].measurements.length; j++) {
-                const submit_data = {
-                    'value': this.state.roles_to_measurements[i][j],
-                    'time': moment().unix()
-                };
+                const data = {
+                    'participant': current_participant,
+                    'drill_id'   : this.props.drill.id,
+                    'drill'      : this.props.drill.name,
+                    'role'       : current_role,
+                    'measurement': current_role['measurements'][j].name,
+                    'value'      : this.state.roles_to_measurements[i][j],
+                    'time'       : moment().unix()
+                }
 
-                let firebase_path = `results/${current_participant.id}/${this.props.drill.id}_${this.props.drill.name}/${this.props.drill.id}_${i}_${current_role.name}/${current_role['measurements'][j].name}`;
-                this.props.startAddResults(submit_data, firebase_path);
+                let firebase_path = `results/`;
+                this.props.startAddResults(data, firebase_path);
             }
         }
 

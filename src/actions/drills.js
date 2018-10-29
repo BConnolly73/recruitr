@@ -1,13 +1,14 @@
 import database from '../firebase/firebase';
 
+import { startAddRoles } from './roles';
+
 export const addDrill = (drill) => ({
     type: 'ADD_DRILL',
     drill: drill
 });
 
 export const startAddDrill = (drillData = {}) => {
-    return (dispatch, getState) => {
-        const uid = getState().auth.uid;
+    return (dispatch) => {
         const {
             name = '',
             description = '',
@@ -17,10 +18,13 @@ export const startAddDrill = (drillData = {}) => {
         const drill = { name, description, roles };
 
         return database.ref(`drills`).push(drill).then((ref) => {
+            //TODO: Remove roles from here
             dispatch(addDrill({
                 id: ref.key,
                 ...drill
-            }))
+            }));
+
+            dispatch(startAddRoles(drill.roles, ref.key));
         });
     }
 }

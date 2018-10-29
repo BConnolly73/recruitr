@@ -26,7 +26,7 @@ export class NewDrillPage extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    startAddDrill: (drill) => dispatch(startAddDrill(drill))
+    startAddDrill:        (drill) => dispatch(startAddDrill(drill))
 });
 
 export default connect(undefined, mapDispatchToProps)(NewDrillPage);
