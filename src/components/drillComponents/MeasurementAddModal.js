@@ -8,12 +8,26 @@ export default class MeasurementAddModal extends React.Component {
         this.state = {
             name: '',
             type: 0,
-            role: 0,
+            role: typeof this.props.selected_role !== 'undefined' ? this.props.selected_role : -1,
             error: '',
-            roles: []
+            roles: [],
         }
 
         this.onOpen = this.onOpen.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('Next', nextProps);
+        console.log('Current', this.props);
+        if (
+            nextProps.selected_role !== this.props.selected_role ||
+            nextProps.roles !== this.props.roles
+        ) {
+            this.setState({
+                role: nextProps.selected_role,
+                roles: nextProps.roles
+            });
+        }
     }
 
     onMeasurementNameChange = (e) => {
@@ -69,46 +83,44 @@ export default class MeasurementAddModal extends React.Component {
     render() {
         return (
             <div>
-                <form>
-                    <Modal
-                        isOpen={this.props.open_measurement_modal}
-                        onRequestClose={this.closeModalNoReturn}
-                        contentLabel="Add Measurement"
-                        closeTimeoutMS={200}
-                        className="modal"
-                        onAfterOpen={this.onOpen}
-                        props={this.props}
-                    >
-                        <h3 className="modal__title">Enter Measurement Details</h3>
-                        {this.state.error && (<p className="form__error">ERROR: {this.state.error}</p>)}
-                        <input
-                            type="text"
-                            id="new_measurement_name"
-                            placeholder="Measurement Name"
-                            onChange={this.onMeasurementNameChange}
-                        />
+                <Modal
+                    isOpen={this.props.open_measurement_modal}
+                    onRequestClose={this.closeModalNoReturn}
+                    contentLabel="Add Measurement"
+                    closeTimeoutMS={200}
+                    className="modal"
+                    onAfterOpen={this.onOpen}
+                    props={this.props}
+                >
+                    <h3 className="modal__title">Enter Measurement Details</h3>
+                    {this.state.error && (<p className="form__error">ERROR: {this.state.error}</p>)}
+                    <input
+                        type="text"
+                        id="new_measurement_name"
+                        placeholder="Measurement Name"
+                        onChange={this.onMeasurementNameChange}
+                    />
 
-                        <select id="new_measurement_type" onChange={this.onMeasurementTypeChange}>
-                            <option value={0}> Select a Measurement Type </option>
-                            <option value={1}> Out of 10 </option>
-                            <option value={2}> Time </option>
-                            <option value={3}> Count </option>
-                        </select>
+                    <select id="new_measurement_type" onChange={this.onMeasurementTypeChange}>
+                        <option value={0}> Select a Measurement Type </option>
+                        <option value={1}> Out of 10 </option>
+                        <option value={2}> Time </option>
+                        <option value={3}> Count </option>
+                    </select>
 
-                        <select id="new_measurement_role" onChange={this.onMeasurementRoleChange}>
-                            <option value={-1}> Select a Role </option>
-                            {
-                                this.state.roles.map((role, index) => {
-                                    return (
-                                        <option key={index} value={index}>{role.name}</option>
-                                    )
-                                })
-                            }
-                        </select>
+                    <select id="new_measurement_role" onChange={this.onMeasurementRoleChange} value={this.state.role}>
+                        <option value={-1}> Select a Role </option>
+                        {
+                            this.props.roles.map((role, index) => {
+                                return (
+                                    <option key={index} value={index}>{role.name}</option>
+                                )
+                            })
+                        }
+                    </select>
 
-                        <button className="button" onClick={this.handleSumbit}>OK</button>
-                    </Modal>
-                </form>
+                    <button className="button" onClick={this.handleSumbit}>OK</button>
+                </Modal>
             </div>
         );
     }
