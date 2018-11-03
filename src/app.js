@@ -9,6 +9,8 @@ import LoadingPage from './components/LoadingPage';
 
 import { startSetParticipants } from './actions/participants';
 import { startSetDrills } from './actions/drills';
+import { startSetRoles } from './actions/roles';
+import { startSetMeasurements } from './actions/measurements';
 import { startSetResults } from './actions/results.js';
 import { startSetAverage } from './actions/average.js';
 
@@ -38,13 +40,16 @@ firebase.auth().onAuthStateChanged((user) => {
         store.dispatch(login(user.uid));
         store.dispatch(startSetParticipants()).then(() => {
             store.dispatch(startSetDrills()).then(() => {
-                store.dispatch(startSetResults()).then(() => {
-                    store.dispatch(startSetAverage()).then(() => {
-                        //console.log(store.getState());
-                        renderApp();
-                        if (history.location.pathname === '/') {
-                            history.push('/dashboard');
-                        }
+                store.dispatch(startSetRoles()).then(() => {
+                    store.dispatch(startSetMeasurements()).then(() => {
+                        store.dispatch(startSetResults()).then(() => {
+                            store.dispatch(startSetAverage()).then(() => {
+                                renderApp();
+                                if (history.location.pathname === '/') {
+                                    history.push('/dashboard');
+                                }
+                            })
+                        })
                     })
                 })
             })
@@ -53,6 +58,5 @@ firebase.auth().onAuthStateChanged((user) => {
         store.dispatch(logout());
         renderApp();
         history.push('/');
-        console.log("LOGGING OUT");
     }
 });

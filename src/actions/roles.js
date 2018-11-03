@@ -39,13 +39,13 @@ export const startSetRoles = () => {
     return (dispatch, getState) => {
         return database.ref(`drill_roles`).once('value').then((snapshot) => {
             const roles = [];
-            snapshot.forEach((drill) => {
+            snapshot.forEach((role) => {
                 roles.push({
                     id: role.key,
                     ...role.val()
                 });
             });
-            dispatch(setRoles(role));
+            dispatch(setRoles(roles));
         })
     }
 }

@@ -6,6 +6,8 @@ import InputNumber from 'rc-input-number';
 import moment from 'moment';
 
 import selectAllParticipants from '../../selectors/participants';
+import { selectRolesByDrillId } from '../../selectors/roles';
+
 import { startAddResults } from '../../actions/results';
 
 
@@ -158,7 +160,7 @@ class SubmitDrillForm extends React.Component {
                 <h1>{this.props.drill.name}</h1>
                 <h5>{this.props.drill.description}</h5>
                 {
-                    this.props.drill.roles.map((role, role_index) => {
+                    this.props.roles.map((role, role_index) => {
                         return (
                             <div className="sumbit_drill_role_container" key={role_index}>
                                 <h4>Role Name: {role.name}</h4>
@@ -171,7 +173,7 @@ class SubmitDrillForm extends React.Component {
                                 />
 
                                 <div className="submit_drill_measurements_container" >
-                                {
+                                {   role.measurements &&
                                     role.measurements.map((measurement, measurement_index) => {
                                         return (
                                             <div key={measurement_index}>
@@ -199,8 +201,18 @@ class SubmitDrillForm extends React.Component {
                     })
                 }
 
-                {this.state.error && (<p className="form__error">ERROR: {this.state.error}</p>)}
-                {this.state.success && (<p className="form__error">{this.state.success}</p>)}
+                {
+                    this.state.error && (
+                        <p className="form__error">ERROR: {this.state.error}</p>
+                    )
+                }
+
+                {
+                    this.state.success && (
+                        <p className="form__error">{this.state.success}</p>
+                    )
+                }
+
                 <button className="submit_button" onClick={this.onSubmit}>Submit</button>
             </div>
         )
@@ -208,11 +220,13 @@ class SubmitDrillForm extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+    console.log('MSTP', state);
     return {
         drill: state.drills.find((drill) => {
             return drill.id === props.match.params.id;
         }),
-        participants: selectAllParticipants(state.participants)
+        participants: selectAllParticipants(state.participants),
+        roles: selectRolesByDrillId(props.match.params.id, state.roles, state.measurements)
     }
 };
 

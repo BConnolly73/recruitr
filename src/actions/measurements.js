@@ -35,13 +35,13 @@ export const startSetMeasurements = () => {
     return (dispatch, getState) => {
         return database.ref(`role_measurements`).once('value').then((snapshot) => {
             const measurements = [];
-            snapshot.forEach((measurements) => {
+            snapshot.forEach((measurement) => {
                 measurements.push({
                     id: measurement.key,
                     ...measurement.val()
                 });
             });
-            dispatch(setRoles(measurements));
+            dispatch(setMeasurements(measurements));
         })
     }
 }

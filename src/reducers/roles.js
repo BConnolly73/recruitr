@@ -1,14 +1,14 @@
 const rolesReducerDefaultState = [];
 export const roleReducer = (state = rolesReducerDefaultState, action) => {
     switch (action.type) {
-        case 'ADD_ROLLS':
+        case 'ADD_ROLES':
             return [
                 ...state,
-                action.roll
+                action.role
             ];
-        case 'SET_ROLLS':
-            return action.rolls;
-        case 'EDIT_ROLL':
+        case 'SET_ROLES':
+            return action.roles;
+        case 'EDIT_ROLE':
             return state.map((role) => {
                 if (role.id === action.id) {
                     return {
