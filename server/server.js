@@ -11,5 +11,5 @@ app.get('*', (request, response) => {
 });
 
 app.listen(port, () => {
-    console.log("PUSS");
+    console.log("Starting Dev");
 });

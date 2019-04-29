@@ -1,2 +1,2 @@
-# recruitr
-Guelph Quidditch Tryout App
+# Clipboard
+Sport Tryout Management Appliation

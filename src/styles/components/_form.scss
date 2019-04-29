@@ -25,3 +25,13 @@
     margin-bottom: $l-size;
     padding: $s-size $s-size $s-size $s-size;
 }
+
+.checkout-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.checkbox-label {
+    margin-left: 1rem;
+}

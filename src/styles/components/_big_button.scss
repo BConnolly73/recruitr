@@ -1,0 +1,21 @@
+.big-button-container {
+    border: $dark-blue 0.5rem solid;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    padding: 2rem 1rem 2rem 1rem;
+    width: 150px;
+    height: 150px;
+    flex-direction: column;
+}
+
+.big-button-icon {
+    align-self: center;
+    margin: auto;
+}
+
+.big-button-text {
+    align-self: center;
+    margin: auto;
+    text-align: center;
+}

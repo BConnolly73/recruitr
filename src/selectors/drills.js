@@ -1,5 +1,4 @@
-const getAllDrills = (drills) => {
+export const selectDrills = (drills) => {
+    console.log("In selector", drills);
     return drills;
 }
-
-export { getAllDrills as default };

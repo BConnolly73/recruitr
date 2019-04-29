@@ -1,0 +1,14 @@
+.drill-dashboard-container {
+    display: flex;
+    justify-items: flex-start;
+    flex-direction: row;
+}
+
+.drill-card {
+    border: 0.5rem $dark-blue solid;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 2rem 1rem 2rem 1rem;
+    width: 150px;
+    height: 150px;
+}

@@ -16,3 +16,15 @@
     align-items: center;
     padding: $s-size 0;
 }
+
+.header-options-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.settings-icon {
+    color: white;
+    margin-right: 1rem;
+}

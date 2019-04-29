@@ -1,23 +1,23 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+
+// Default
 import DashboardPage from './../components/DashboardPage.js';
 import LoginPage from './../components/LoginPage.js';
 import NotFoundPage from './../components/NotFoundPage.js';
 
-import NewParticipantPage from './../components/participantComponents/NewParticipantPage.js';
-import ParticipantsViewPage from './../components/participantComponents/ParticipantsViewPage.js';
-import EditParticipantPage from './../components/participantComponents/EditParticipantPage.js';
+// Settings
+import SettingsPage from './../components/Pages/SettingsPage';
 
-import NewDrillPage from './../components/drillComponents/NewDrillPage.js';
+// Participants
+import CreateParticipantPage from './../components/Pages/Participants/CreateParticipantPage';
 
-import SubmitRecordDashboards from './../components/submissionComponents/SubmitRecordDashboard';
-import SubmitDrillForm from './../components/submissionComponents/SubmitDrillForm';
-
-import ReviewDashboard from './../components/reviewComponents/ReviewDashboard';
-
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
+// Drills
+import DrillDashboard from './../components/Pages/Drills/DrillDashboard';
+import CreateDrillPage from './../components/Pages/Drills/CreateDrillPage';
 
 export const history = createHistory();
 
@@ -26,14 +26,13 @@ const AppRouter = () => (
         <div>
             <Switch>
                 <PublicRoute path="/" component={LoginPage} exact={true}/>
+
                 <PrivateRoute path="/dashboard" component={DashboardPage} exact={true}/>
-                <PrivateRoute path="/new_participant" component={NewParticipantPage} exact={true}/>
-                <PrivateRoute path="/participants" component={ParticipantsViewPage} exact={true}/>
-                <PrivateRoute path="/edit_participant/:id" component={EditParticipantPage}/>
-                <PrivateRoute path="/new_drill" component={NewDrillPage} exact={true}/>
-                <PrivateRoute path="/submit_dashboard" component={SubmitRecordDashboards} exact={true}/>
-                <PrivateRoute path="/submit/:id" component={SubmitDrillForm} />
-                <PrivateRoute path="/review" component={ReviewDashboard} />
+                <PrivateRoute path="/settings" component={SettingsPage} exact={true}/>
+                <PrivateRoute path="/create_participant" component={CreateParticipantPage} exact={true}/>
+
+                <PrivateRoute path="/drills" component={DrillDashboard} exact={true}/>
+                <PrivateRoute path="/create_drill" component={CreateDrillPage} exact={true}/>
 
                 <Route component={NotFoundPage} />
             </Switch>

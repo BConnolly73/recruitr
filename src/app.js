@@ -4,15 +4,13 @@ import { Provider } from 'react-redux';
 import AppRouter, { history } from './routers/AppRouter.js';
 import configureStore from './store/configureStore';
 import { firebase } from './firebase/firebase';
-import { login, logout } from './actions/auth';
-import LoadingPage from './components/LoadingPage';
 
-import { startSetParticipants } from './actions/participants';
-import { startSetDrills } from './actions/drills';
-import { startSetRoles } from './actions/roles';
-import { startSetMeasurements } from './actions/measurements';
-import { startSetResults } from './actions/results.js';
-import { startSetAverage } from './actions/average.js';
+import { login, logout } from './actions/auth';
+import { startGetSettings } from './actions/settings';
+import { startGetParticipants } from './actions/participants';
+import { startGetDrills } from './actions/drills';
+
+import LoadingPage from './components/LoadingPage';
 
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
@@ -38,22 +36,16 @@ ReactDOM.render(<LoadingPage />, document.getElementById("app"));
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         store.dispatch(login(user.uid));
-        store.dispatch(startSetParticipants()).then(() => {
-            store.dispatch(startSetDrills()).then(() => {
-                store.dispatch(startSetRoles()).then(() => {
-                    store.dispatch(startSetMeasurements()).then(() => {
-                        store.dispatch(startSetResults()).then(() => {
-                            store.dispatch(startSetAverage()).then(() => {
-                                renderApp();
-                                if (history.location.pathname === '/') {
-                                    history.push('/dashboard');
-                                }
-                            })
-                        })
-                    })
+        store.dispatch(startGetSettings()).then(() => {
+            store.dispatch(startGetParticipants()).then(() => {
+                store.dispatch(startGetDrills()).then(() => {
+                renderApp();
+                if (history.location.pathname === '/') {
+                    history.push('/dashboard');
+                }
                 })
             })
-        });
+       });
     } else {
         store.dispatch(logout());
         renderApp();

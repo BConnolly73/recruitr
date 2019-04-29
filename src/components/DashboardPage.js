@@ -1,13 +1,21 @@
 import React from 'react';
-import BigMenuButton from './BigMenuButton';
 
-const DashboardPage = (props) => (
-    <div>
-        <BigMenuButton name={"Create Participant"} onClick={() => {props.history.push('/new_participant')}}/>
-        <BigMenuButton name={"Create Drill"} onClick={() => {props.history.push('/new_drill')}}/>
-        <BigMenuButton name={"Submit Results"} onClick={() => {props.history.push('/submit_dashboard')}}/>
-        <BigMenuButton name={"Review Tryout Results"} onClick={() => {props.history.push('/review')}}/>
-    </div>
-);
+import MenuButton  from './MenuButton';
+
+const DashboardPage = (props) => {
+    return (
+        <div className="content-container">
+            <MenuButton
+                onClick={() => {props.history.push('/create_participant')}}
+                text={"Create Participant"}
+            />
+
+            <MenuButton
+                onClick={() => {props.history.push('/drills')}}
+                text={"Drills"}
+            />
+        </div>
+    );
+};
 
 export { DashboardPage as default };
