@@ -15,17 +15,16 @@ class ReviewDashboard extends React.Component {
 
         this.state = {
             selected_player: undefined,
+            results: []
         };
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.addAverageToPlayerObject = this.addAverageToPlayerObject.bind(this);
-
-        this.final_results = this.addAverageToPlayerObject();
     }
 
     addAverageToPlayerObject() {
-        this.final_results = this.props.results;
+        let results;
 
         for (let [p_id, drills] of Object.entries(this.props.results)) {
             for (let [d_id, roles] of Object.entries(drills)) {
@@ -33,7 +32,8 @@ class ReviewDashboard extends React.Component {
                     for (let [m_id, values] of Object.entries(measurements)) {
                         this.props.average.map((drill) => {
                             if (drill.id === d_id.substring(0, 21)) {
-                                this.final_results[p_id][d_id][r_id][m_id]['total_average'] = drill[r_id][m_id]['average']
+                                console.log(drill[r_id][m_id]['average']);
+                                results[p_id][d_id][r_id][m_id]['total_average'] = drill[r_id][m_id]['average']
                             }
                         });
                     }
@@ -41,7 +41,9 @@ class ReviewDashboard extends React.Component {
             }
         }
 
-        return this.final_results;
+        this.setState(() => ({
+            results: results
+        }));
     }
 
     handlePlayerClick(player) {
@@ -49,7 +51,7 @@ class ReviewDashboard extends React.Component {
     }
 
     openModal(player) {
-        player['results'] = this.final_results[player.id];
+        player['results'] = this.state.results;
         this.setState(() => ({ selected_player: player }))
     }
 
@@ -58,14 +60,16 @@ class ReviewDashboard extends React.Component {
     }
 
     render() {
+        console.log(this);
+
         return (
             <div className="content-container review_page_container">
                 <h1 className="review_header">Tryout Results</h1>
                 {this.props.participants.map((player) => {
                     return (
-                        <PlayerPanel 
-                            key={player.id} 
-                            player={player} 
+                        <PlayerPanel
+                            key={player.id}
+                            player={player}
                             openModal={() => { this.handlePlayerClick(player) }}
                         />
                     )
@@ -75,6 +79,7 @@ class ReviewDashboard extends React.Component {
                     handlePlayerModalClose={this.closeModal}
                     player={this.state.selected_player}
                     drills={this.props.drills}
+                    results={this.addAverageToPlayerObject()}
                 />
             </div>
         )

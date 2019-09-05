@@ -1,6 +1,12 @@
 import React from 'react';
 import Modal from 'react-modal';
+import {
+    id_to_year,
+    id_to_position,
+    id_to_team
+} from './../../selectors/id_to_string';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import "react-tabs/style/react-tabs.css";
 
 export default class PlayerModal extends React.Component {
     constructor(props) {
@@ -10,55 +16,6 @@ export default class PlayerModal extends React.Component {
 
     closeModal() {
         this.props.handlePlayerModalClose();
-    }
-
-    getPositionName(id) {
-        switch(id) {
-            case '1':
-                return 'Keeper';
-            case '2':
-                return 'Chaser';
-            case '3':
-                return 'Beater';
-            case '4':
-                return 'Any'
-            default:
-                return 'N/A';
-        }
-    }
-
-    getTeamName(id) {
-        switch(id) {
-            case '1':
-                return 'University of Guelph';
-            case '2':
-                return 'Royal City Quidditch';
-            case '3':
-                return 'Any Team';
-            default:
-                return 'N/A';
-        }
-    }
-
-    getYear(id) {
-        switch(id) {
-            case '1':
-                return 'First Year';
-            case '2':
-                return 'Second Year';
-            case '3':
-                return 'Third Year';
-            case '4':
-                return 'Fourth Year';
-            case '5':
-                return 'Fourth Year +';
-            case '6':
-                return 'Graduate Student';
-            case '7':
-                return 'Not a Student';
-            default:
-                return 'N/A';
-        }
     }
 
     structureDrillResultObject(results, drills) {
@@ -98,95 +55,58 @@ export default class PlayerModal extends React.Component {
             matched = false;
         });
 
-        return this.buildDrillTabs(structured_drills);
-    }
+        console.log(structured_drills);
 
-    //TODO:
-    // - Pass list of expected roles to say nothing avaible
-    // - Find error with player average calc
-    buildDrillTabs(drills) {
-        console.log(drills);
+        return this.showDrillTabs(structured_drills);
+    }
+    
+
+    showDrillTabs() {
         return (
-            <div>
-            {
-                drills.map((drill) => {
-                    return (
-                        <TabPanel key={drill.id}>
-                        {
-                            drill.roles !== undefined ? (
-                                <div>
-                                    {
-                                        drill.roles.map((role) => {
-                                            return (
-                                                <div className="role_container" key={role.role_id}>
-                                                    <b>{role.role_id.substring(23, role.role_id.length)}</b>
-                                                    {
-                                                        role.measurements.map((metric, metric_index) => {
-                                                            return (
-                                                                <div className="measurement_container" key={metric_index}>
-                                                                    <p>{metric.measurement}</p>
-                                                                    <div className="measurement_container_no_title">
-                                                                        <p>Player Average: {parseFloat(metric.values.player_average).toFixed(2)}</p>
-                                                                        <p>Tryout Average: {parseFloat(metric.values.total_average).toFixed(2)}</p>
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        })
-                                                    }
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            ) : (
-                                <p>No results for this drill</p>
-                            )
-                        }
-                        </TabPanel>
-                    )
-                })
-            }
-            </div>
-        )
+            <Tabs>
+                <TabList>
+                <Tab>Title 1</Tab>
+                <Tab>Title 2</Tab>
+                </TabList>
+
+                <TabPanel>
+                <h2>Any content 1</h2>
+                </TabPanel>
+                <TabPanel>
+                <h2>Any content 2</h2>
+                </TabPanel>
+            </Tabs>
+        );
     }
 
     render() {
+        const { player } = this.props;
+        console.log(this.props);
         return (
             <Modal
-                isOpen={!!this.props.player}
+                isOpen={!!player}
                 onRequestClose={this.closeModal}
-                contentLabel={(this.props.player) ? this.props.player.first_name + ' ' + this.props.player.last_name : ''}
+                contentLabel={(player) ? player.first_name + ' ' + player.last_name : ''}
                 closeTimeoutMS={200}
                 className="modal"
             >
                 <div>
-                    <h3 className="modal__title">{(this.props.player) ? this.props.player.first_name + ' ' + this.props.player.last_name : ''}</h3>
+                    <h3 className="modal__title">{(player) ? player.first_name + ' ' + player.last_name : ''}</h3>
                     <div className="description_container">
-                        <p className="small_text">{this.props.player && this.props.player.about}</p>
-                        <p className="description_text">{this.props.player && this.props.player.email}</p>
-                        <p className="description_text">Position: {this.props.player && this.getPositionName(this.props.player.position)}</p>
-                        <p className="description_text">Team: {this.props.player && this.getTeamName(this.props.player.team)}</p>
-                        <p className="description_text">Academic Year: {this.props.player && this.getYear(this.props.player.year)}</p>
+                        <p className="small_text">{player && player.about}</p>
+                        <p className="description_text">{player && player.email}</p>
+                        <p className="description_text">Position: {player &&  id_to_position(player.position)}</p>
+                        <p className="description_text">Team: {player && id_to_team(player.team)}</p>
+                        <p className="description_text">Academic Year: {player && id_to_year(player.year)}</p>
                     </div>
                 </div>
 
-                <Tabs>
-                    <TabList>
-                    {
-                        this.props.drills.map((drill) => {
-                            return (
-                                <Tab key={drill.id}>{drill.name}</Tab>
-                            )
-                        })
-                    }
-                    </TabList>
+                {
+                    this.props.player &&
+                    this.structureDrillResultObject(this.props.player.results, this.props.drills)
+                }
 
-                    {
-                        this.props.player && this.structureDrillResultObject(this.props.player.results, this.props.drills)
-                    }
-                </Tabs>
-
-                <button className="button" onClick={this.closeModal}>OK</button>
+                <button className="button" onClick={this.closeModal}>Close</button>
             </Modal>
         )
     }

@@ -11,7 +11,6 @@ export class NewParticipantPage extends React.Component {
 
     onSubmit = (participant) => {
         this.props.startAddParticipant(participant);
-        this.props.history.push('/dashboard');
     }
 
     render() {

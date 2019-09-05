@@ -31,7 +31,7 @@ export default class PlayerAddModal extends React.Component {
     }
 
     closeAndResetModal = (return_val = null) => {
-        this.setState(() => ({ 
+        this.setState(() => ({
             error: '',
             name: '',
         }));

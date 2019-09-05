@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
 
+
 export const Header = ({ startLogout }) => (
     <header className="header">
         <div className="content-container">
@@ -10,7 +11,10 @@ export const Header = ({ startLogout }) => (
                 <Link className="header__title" to="/dashboard">
                     <h1>Clipboard</h1>
                 </Link>
-                <button className="button button--link" onClick={startLogout}>Logout</button>
+                <div>
+                    <button className="button button--link" onClick={() => {}}>Settings</button>
+                    <button className="button button--link" onClick={startLogout}>Logout</button>
+                </div>
             </div>
         </div>
     </header>
