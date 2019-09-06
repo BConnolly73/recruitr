@@ -92,7 +92,7 @@ class SubmitDrillForm extends React.Component {
             for (j = 0; j < this.props.drill.roles[i].measurements.length; j++) {
                 const submit_data = {
                     'value': this.state.roles_to_measurements[i][j],
-                    'time': moment().unix()
+                    'time': moment().utc().format('YYYY-MM-DD HH:mm:ss')
                 };
 
                 let firebase_path = `results/${current_participant.id}/${this.props.drill.id}_${this.props.drill.name}/${this.props.drill.id}_${i}_${current_role.name}/${current_role['measurements'][j].name}`;
